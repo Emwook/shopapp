@@ -3,7 +3,7 @@ import Button from '../Button/Button';
 import OptionSize from '../OptionSize/OptionSize';
 import OptionColor from '../OptionColor/OptionColor';
 import productsData from '../../data/products';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const ProductForm = (props) =>{
@@ -20,6 +20,10 @@ const ProductForm = (props) =>{
         setCurrentAddPrice(addPrices[props.id][sizeId]);
     };
 
+    const price = useMemo(()=>{
+        return(props.basePrice + currentAddPrice);
+    }, [currentAddPrice, props.basePrice]);
+
     const sendProductData = () => {
         console.log('Summary');
         console.log('========');
@@ -33,7 +37,7 @@ const ProductForm = (props) =>{
         <div>
         <header>
           <h2 className={styles.name}>{props.title}</h2>
-          <span className={styles.price}>Price: {props.basePrice + currentAddPrice}$</span>
+          <span className={styles.price}>Price: {price}$</span>
         </header>
         <form onSubmit={(event) => {event.preventDefault(); sendProductData();}}>
           <OptionSize 
